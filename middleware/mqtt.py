@@ -1,46 +1,43 @@
-# python3.6
+#!/usr/bin/python3
 
-import random
+import sys
+import paho.mqtt.client as mqtt
+import json
 
-from paho.mqtt import client as mqtt_client
-
-
-broker = 'eu1.cloud.thethings.network'
-port = 1883
-topic = "python/mqtt"
-# generate client ID with pub prefix randomly
-client_id = f'python-mqtt-{random.randint(0, 100)}'
-username = 'opendata-temperature@ttn'
-password = 'NNSXS.RQ2GKAXLHXCZ76FKGDRSQEU2UZWFGWHYB2ZJAVQ.KALJKMFAMNUZYETNW7IWXUX4XOKAVNMOFYOTJE7GS7SDSYOK6B7Q'
+User = "opendata-temperature@ttn"
+Password = 'NNSXS.77ZDGYBJIDJ65AZU2O6JB5GPKCGHHSQBDRZ2FZQ.XRMPHANORKM5MJQK47N4LESMRG4PN3ENP6G2QA3PKR6OLHKTY3OQ'
+theRegion = "EU1"  # The region you are using
 
 
-def connect_mqtt() -> mqtt_client:
-    def on_connect(client, userdata, flags, rc):
-        if rc == 0:
-            print("Connected to MQTT Broker!")
-        else:
-            print("Failed to connect, return code %d\n", rc)
-
-    client = mqtt_client.Client(client_id)
-    client.username_pw_set(username, password)
-    client.on_connect = on_connect
-    client.connect(broker, port)
-    return client
+def on_connect(mqttc, obj, flags, rc):
+    print("\nConnect: rc = " + str(rc))
 
 
-def subscribe(client: mqtt_client):
-    def on_message(client, userdata, msg):
-        print(f"Received `{msg.payload.decode()}` from `{msg.topic}` topic")
-
-    client.subscribe(topic)
-    client.on_message = on_message
+def on_message(mqttc, obj, msg):
+    parsedJSON = json.loads(msg.payload)
+    dumps = json.dumps(parsedJSON['uplink_message']['decoded_payload'])
+    print(dumps)
 
 
-def run():
-    client = connect_mqtt()
-    subscribe(client)
-    client.loop_forever()
+mqttc = mqtt.Client()
+
+mqttc.on_connect = on_connect
+mqttc.on_message = on_message
+
+mqttc.username_pw_set(User, Password)
+
+mqttc.tls_set()
+
+mqttc.connect(theRegion.lower() + ".cloud.thethings.network", 8883, 60)
+
+mqttc.subscribe("#", 0)
+
+try:
+    run = True
+    while run:
+        mqttc.loop(10)
 
 
-if __name__ == '__main__':
-    run()
+except KeyboardInterrupt:
+    print("Exit")
+    sys.exit(0)
