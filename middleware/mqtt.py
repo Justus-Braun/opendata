@@ -18,26 +18,25 @@ def on_message(mqttc, obj, msg):
     dumps = json.dumps(parsedJSON['uplink_message']['decoded_payload'])
     print(dumps)
 
+def mqtt_init():
+    mqttc = mqtt.Client()
 
-mqttc = mqtt.Client()
+    mqttc.on_connect = on_connect
+    mqttc.on_message = on_message
 
-mqttc.on_connect = on_connect
-mqttc.on_message = on_message
+    mqttc.username_pw_set(User, Password)
 
-mqttc.username_pw_set(User, Password)
+    mqttc.tls_set()
 
-mqttc.tls_set()
+    mqttc.connect(theRegion.lower() + ".cloud.thethings.network", 8883, 60)
 
-mqttc.connect(theRegion.lower() + ".cloud.thethings.network", 8883, 60)
+    mqttc.subscribe("#", 0)
 
-mqttc.subscribe("#", 0)
+    try:
+        run = True
+        while run:
+            mqttc.loop(10)
 
-try:
-    run = True
-    while run:
-        mqttc.loop(10)
-
-
-except KeyboardInterrupt:
-    print("Exit")
-    sys.exit(0)
+    except KeyboardInterrupt:
+        print("Exit")
+        sys.exit(0)
