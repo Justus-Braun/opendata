@@ -7,7 +7,7 @@ DB_NAME = 'temperature'
 EVENT_NAME = 'temperatureEvents'
 MEASUREMENT_NAME = "temperatureMeasurement"
 
-client = InfluxDBClient(host='localhost', port=8086)
+client = InfluxDBClient(host='influxdb', port=8086)
 
 
 def init():

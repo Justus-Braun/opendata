@@ -4,6 +4,9 @@ import db
 
 app = Flask(__name__)
 
+mqtt.mqtt_init()
+db.init()
+
 
 @app.route('/')
 def hello_world():  # put application's code here
@@ -11,6 +14,4 @@ def hello_world():  # put application's code here
 
 
 if __name__ == '__main__':
-    mqtt.mqtt_init()
-    db.init()
     app.run()
