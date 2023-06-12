@@ -1,5 +1,6 @@
 from flask import Flask
 import mqtt
+import db
 
 app = Flask(__name__)
 
@@ -10,5 +11,6 @@ def hello_world():  # put application's code here
 
 
 if __name__ == '__main__':
-    app.run()
     mqtt.mqtt_init()
+    db.init()
+    app.run()

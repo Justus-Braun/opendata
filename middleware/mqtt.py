@@ -4,6 +4,8 @@ import sys
 import paho.mqtt.client as mqtt
 import json
 
+import db
+
 User = "opendata-temperature@ttn"
 Password = 'NNSXS.77ZDGYBJIDJ65AZU2O6JB5GPKCGHHSQBDRZ2FZQ.XRMPHANORKM5MJQK47N4LESMRG4PN3ENP6G2QA3PKR6OLHKTY3OQ'
 theRegion = "EU1"  # The region you are using
@@ -15,8 +17,9 @@ def on_connect(mqttc, obj, flags, rc):
 
 def on_message(mqttc, obj, msg):
     parsedJSON = json.loads(msg.payload)
-    dumps = json.dumps(parsedJSON['uplink_message']['decoded_payload'])
-    print(dumps)
+    data = parsedJSON['uplink_message']['decoded_payload']
+    db.insert_data(1, data['temperature'], data['battery'], data['humidity'])
+
 
 def mqtt_init():
     mqttc = mqtt.Client()

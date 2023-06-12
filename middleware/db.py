@@ -1,55 +1,38 @@
 #!/usr/bin/env python3
-import json
 
 from influxdb import InfluxDBClient
-import uuid
-import random
 import time
 
+DB_NAME = 'temperature'
+EVENT_NAME = 'temperatureEvents'
+MEASUREMENT_NAME = "temperatureMeasurement"
+
 client = InfluxDBClient(host='localhost', port=8086)
-client.drop_database('writetest')
-client.create_database('writetest')
-
-measurement_name = 'm1'
-number_of_points = 100
-data_end_time = int(time.time() * 1000) #milliseconds
 
 
-json_body = [
-    {
-        "measurement": "brushEvents",
-        "tags": {
-            "user": "Carol",
-            "brushId": "6c89f539-71c6-490d-a28d-6c5d84c0ee2f"
-        },
-        "time": "2023-03-28T8:01:00Z",
-        "fields": {
-            "duration": 127
+def init():
+    client.drop_database(DB_NAME)
+    client.create_database(DB_NAME)
+
+
+def insert_data(id, temperature, battery, humidity):
+    current_time = round(time.time() * 1000)
+    json_body = [
+        {
+            "measurement": MEASUREMENT_NAME,
+            "event": EVENT_NAME,
+            "tags": {
+                "id": id
+            },
+            "time": current_time,
+            "fields": {
+                "temperature": temperature,
+                "battery": battery,
+                "humidity": humidity
+            }
         }
-    },
-    {
-        "measurement": "brushEvents",
-        "tags": {
-            "user": "Carol",
-            "brushId": "6c89f539-71c6-490d-a28d-6c5d84c0ee2f"
-        },
-        "time": "2023-03-29T8:04:00Z",
-        "fields": {
-            "duration": 132
-        }
-    },
-    {
-        "measurement": "brushEvents",
-        "tags": {
-            "user": "Carol",
-            "brushId": "6c89f539-71c6-490d-a28d-6c5d84c0ee2f"
-        },
-        "time": "2023-03-30T8:02:00Z",
-        "fields": {
-            "duration": 129
-        }
-    }
-]
+    ]
 
+    print(current_time)
 
-client.write_points(json_body, database='writetest', time_precision='ms', batch_size=10000)
+    client.write_points(json_body, database='writetest', time_precision='ms', batch_size=10000)
