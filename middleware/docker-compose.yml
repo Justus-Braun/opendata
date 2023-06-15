@@ -1,17 +1,5 @@
 version: '3.6'
 services:
-  telegraf:
-    image: telegraf
-    container_name: telegraf
-    restart: always
-    volumes:
-    - ./telegraf.conf:/etc/telegraf/telegraf.conf:ro
-    depends_on:
-      - influxdb
-    links:
-      - influxdb
-    ports:
-    - '8125:8125'
   influxdb:
     image: influxdb:1.8-alpine
     container_name: influxdb
@@ -40,6 +28,7 @@ services:
       - '3000:3000'
     volumes:
       - grafana_data:/var/lib/grafana
+      - ./data/grafana-provisioning/:/etc/grafana/provisioning
   python:
     container_name: python
     build:
