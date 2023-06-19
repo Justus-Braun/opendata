@@ -1,9 +1,7 @@
-#!/usr/bin/env python3
-
 from influxdb import InfluxDBClient
 import time
 
-DB_NAME = 'messurements'
+DB_NAME = 'measurements'
 EVENT_NAME = 'temperatureEvents'
 MEASUREMENT_NAME = "temperatureMeasurement"
 
@@ -11,28 +9,34 @@ client = InfluxDBClient(host='influxdb', port=8086)
 
 
 def init():
-    client.drop_database(DB_NAME)
+    #TODO: check if database exists (try/catch)
+    try:
+        client.drop_database(DB_NAME)
+    except:
+        pass
+        
     client.create_database(DB_NAME)
 
+def convert_data_to_fields(data):
+    fields = {}
+    for key, value in data.items():
+        fields[key] = value
+    return fields
 
-def insert_data(id, temperature, battery, humidity):
+
+
+def insert_data(device_id, data):
     current_time = round(time.time() * 1000)
     json_body = [
         {
             "measurement": MEASUREMENT_NAME,
             "event": EVENT_NAME,
             "tags": {
-                "id": id
+                "device_id": device_id
             },
             "time": current_time,
-            "fields": {
-                "temperature": temperature,
-                "battery": battery,
-                "humidity": humidity
-            }
+            "fields": convert_data_to_fields(data)
         }
     ]
 
-    print(current_time)
-
-    client.write_points(json_body, database='writetest', time_precision='ms', batch_size=10000)
+    client.write_points(json_body, database=DB_NAME, time_precision='ms', batch_size=10000)
