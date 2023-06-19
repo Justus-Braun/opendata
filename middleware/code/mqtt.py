@@ -1,16 +1,18 @@
 import sys
 import paho.mqtt.client as mqtt
 import json
-from threading import Thread
-
 import db
+import os
 
-User = "opendata-temperature@ttn"
-Password = 'NNSXS.77ZDGYBJIDJ65AZU2O6JB5GPKCGHHSQBDRZ2FZQ.XRMPHANORKM5MJQK47N4LESMRG4PN3ENP6G2QA3PKR6OLHKTY3OQ'
-theRegion = "EU1"  # The region you are using
+from threading import Thread
+from dotenv import load_dotenv
+
+load_dotenv()
+
+TTN_USER = os.getenv("TTN_USER") or ""
+TTN_PASSWORD = os.getenv("TTN_PASSWORD") 
+TTN_REGION = os.getenv("TTN_REGION") or "eu1"  # The region you are using
 port = 8883  # Secure port
-run = True
-
 
 def on_connect(mqttc, obj, flags, rc):
     print("\nConnect: rc = " + str(rc), flush=True)
@@ -33,7 +35,7 @@ def on_message(mqttc, obj, msg):
 
 
 def thread_function(client):
-    while run:
+    while True:
         client.loop(10)
 
 
@@ -43,11 +45,11 @@ def init():
     client.on_connect = on_connect
     client.on_message = on_message
 
-    client.username_pw_set(User, Password)
+    client.username_pw_set(TTN_USER, TTN_PASSWORD)
 
     client.tls_set()
 
-    client.connect(theRegion.lower() + ".cloud.thethings.network", port=port, keepalive=60, bind_address="")
+    client.connect(TTN_REGION.lower() + ".cloud.thethings.network", port=port, keepalive=60, bind_address="")
 
     client.subscribe("#", 0)
 

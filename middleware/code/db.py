@@ -24,7 +24,6 @@ def convert_data_to_fields(data):
     return fields
 
 
-
 def insert_data(device_id, data):
     current_time = round(time.time() * 1000)
     json_body = [
