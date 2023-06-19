@@ -3,7 +3,7 @@
 from influxdb import InfluxDBClient
 import time
 
-DB_NAME = 'temperature'
+DB_NAME = 'messurements'
 EVENT_NAME = 'temperatureEvents'
 MEASUREMENT_NAME = "temperatureMeasurement"
 

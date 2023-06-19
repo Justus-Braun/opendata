@@ -5,6 +5,7 @@ RUN apt-get install -y --no-install-recommends
 
 # for flask web server
 EXPOSE 5000
+EXPOSE 8883
 
 # set working directory
 WORKDIR /app

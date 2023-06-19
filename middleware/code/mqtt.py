@@ -19,6 +19,7 @@ def on_connect(mqttc, obj, flags, rc):
 
 def on_message(mqttc, obj, msg):
     parsedJSON = json.loads(msg.payload)
+    print(msg.payload)
     data = parsedJSON['uplink_message']['decoded_payload']
     db.insert_data(1, data['temperature'], data['battery'], data['humidity'])
 
@@ -28,7 +29,7 @@ def thread_function(mqttc):
         mqttc.loop(10)
 
 
-def mqtt_init():
+def init():
     mqttc = mqtt.Client()
 
     mqttc.on_connect = on_connect
@@ -45,6 +46,7 @@ def mqtt_init():
     try:
         thread = Thread(target=thread_function, args=(mqttc,))
         thread.start()
+        print("Thread started")
 
     except KeyboardInterrupt:
         print("Exit")

@@ -1,10 +1,11 @@
-from flask import Flask
 import mqtt
 import db
+from flask import Flask
 
 app = Flask(__name__)
 
-mqtt.mqtt_init()
+print("Init")
+mqtt.init()
 db.init()
 
 
