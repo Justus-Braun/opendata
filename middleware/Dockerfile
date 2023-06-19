@@ -1,11 +1,9 @@
-FROM python:3
-
-RUN apt-get update
-RUN apt-get install -y --no-install-recommends
+FROM python:3.9.17-alpine
 
 # for flask web server
 EXPOSE 5000
 EXPOSE 8883
+EXPOSE 1883
 
 # set working directory
 WORKDIR /app

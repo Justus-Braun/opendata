@@ -38,6 +38,7 @@ services:
     ports:
       - 5000:5000
       - 8883:8883
+      - 1883:1883
     depends_on:
       - influxdb
       
