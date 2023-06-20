@@ -9,7 +9,6 @@ client = InfluxDBClient(host='influxdb', port=8086)
 
 
 def init():
-    #TODO: check if database exists (try/catch)
     try:
         client.drop_database(DB_NAME)
     except:
