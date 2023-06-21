@@ -26,3 +26,35 @@ Board: [CubeCell HTCC-AB01](https://heltec.org/project/htcc-ab01/)
 ## Nutzung
 
 ## API
+
+## Middleware
+Create an `.env` file in `middleware/` with content
+```
+#Grafana
+GF_LOG_LEVEL=debug
+GF_SECURITY_ADMIN_USER=admin
+GF_SECURITY_ADMIN_PASSWORD=admin
+
+#InfluxDB
+INFLUXDB_ADMIN_USER=admin
+INFLUXDB_ADMIN_PASSWORD=admin
+```
+Create an `.env` file in `middleware/code/` with content
+```
+#TTN 
+TTN_USER=
+TTN_PASSWORD=
+TTN_REGION=eu1
+
+#Influxdb
+DB_NAME=measurements
+EVENT_NAME=measurementEvent
+
+#OpenWeather
+# [openweathermap.org](https://openweathermap.org/)
+# [latlong.net](https://www.latlong.net/)
+WEATHER_LATITUDE=
+WEATHER_LONGITUDE=
+OPEN_WEATHER_API_KEY=
+```
+
