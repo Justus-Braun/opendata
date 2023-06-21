@@ -14,6 +14,7 @@ TTN_PASSWORD = os.getenv("TTN_PASSWORD")
 TTN_REGION = os.getenv("TTN_REGION") or "eu1"  # The region you are using
 port = 8883  # Secure port
 
+
 def on_connect(mqttc, obj, flags, rc):
     print("\nConnect: rc = " + str(rc), flush=True)
 
@@ -22,10 +23,9 @@ def on_message(mqttc, obj, msg):
     data = None
     device_id = None
     try:
-        print(msg.payload, flush=True)
-        parsedJSON = json.loads(msg.payload)
-        data = parsedJSON['uplink_message']['decoded_payload']
-        device_id = parsedJSON['end_device_ids']['device_id']
+        parsed_json = json.loads(msg.payload)
+        data = parsed_json['uplink_message']['decoded_payload']
+        device_id = parsed_json['end_device_ids']['device_id']
     except:
         print("Message has wrong data format (Could be caused by an device joining)", flush=True)
         pass

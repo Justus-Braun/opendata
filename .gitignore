@@ -4,3 +4,7 @@
 middleware/__pycache__/
 
 middleware/code/__pycache__/
+
+middleware/code/.env
+
+middleware/.env

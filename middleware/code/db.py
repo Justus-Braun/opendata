@@ -1,9 +1,14 @@
 from influxdb import InfluxDBClient
 import time
+import os
 
-DB_NAME = 'measurements'
-EVENT_NAME = 'temperatureEvents'
-MEASUREMENT_NAME = "temperatureMeasurement"
+from dotenv import load_dotenv
+
+load_dotenv()
+
+DB_NAME = os.getenv("DB_NAME") or "measurements"
+DB_WEATHER_API = "weather_api"
+EVENT_NAME = os.getenv("EVENT_NAME") or 'measurementEvent'
 
 client = InfluxDBClient(host='influxdb', port=8086)
 
@@ -14,7 +19,14 @@ def init():
     except:
         pass
         
+    try:
+        client.drop_database(DB_WEATHER_API)
+    except:
+        pass
+
+    client.create_database(DB_WEATHER_API)
     client.create_database(DB_NAME)
+
 
 def convert_data_to_fields(data):
     fields = {}
@@ -22,13 +34,29 @@ def convert_data_to_fields(data):
         fields[key] = value
     return fields
 
-
-def insert_data(device_id, data):
+def insert_data_weather_api(data): 
     current_time = round(time.time() * 1000)
     json_body = [
         {
-            "measurement": MEASUREMENT_NAME,
-            "event": EVENT_NAME,
+            "measurement": "weather_measurements",
+            "event": "weatherEvent",
+            "tags": {
+                "device_id": "open_weather"
+            },
+            "time": current_time,
+            "fields": data
+        }
+    ]
+
+    client.write_points(json_body, database=DB_WEATHER_API, time_precision='ms', batch_size=10000)
+
+
+def insert_data(device_id, data, event=EVENT_NAME):
+    current_time = round(time.time() * 1000)
+    json_body = [
+        {
+            "measurement": "ttn_measurements",
+            "event": event,
             "tags": {
                 "device_id": device_id
             },
