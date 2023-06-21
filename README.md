@@ -29,7 +29,7 @@ Board: [CubeCell HTCC-AB01](https://heltec.org/project/htcc-ab01/)
 
 ## Middleware
 Create an `.env` file in `middleware/` with content
-```
+```env
 #Grafana
 GF_LOG_LEVEL=debug
 GF_SECURITY_ADMIN_USER=admin
@@ -40,7 +40,9 @@ INFLUXDB_ADMIN_USER=admin
 INFLUXDB_ADMIN_PASSWORD=admin
 ```
 Create an `.env` file in `middleware/code/` with content
-```
+[openweathermap.org](https://openweathermap.org/)
+[latlong.net](https://www.latlong.net/)
+```env
 #TTN 
 TTN_USER=
 TTN_PASSWORD=
@@ -51,8 +53,6 @@ DB_NAME=measurements
 EVENT_NAME=measurementEvent
 
 #OpenWeather
-# [openweathermap.org](https://openweathermap.org/)
-# [latlong.net](https://www.latlong.net/)
 WEATHER_LATITUDE=
 WEATHER_LONGITUDE=
 OPEN_WEATHER_API_KEY=
