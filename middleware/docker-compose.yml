@@ -27,10 +27,6 @@ services:
       - influxdb
     ports:
       - '3000:3000'
-    # volumes:
-    #   - ./grafana/dashboard.yaml:/etc/grafana/provisioning/dashboards/main.yaml
-    #   - ./grafana/dashboards:/var/lib/grafana/dashboards
-    #   - ./grafana/datasource.yml:/etc/grafana/provisioning/datasources/datasource.yml
   python:
     container_name: python
     build:
