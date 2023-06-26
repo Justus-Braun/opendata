@@ -11,6 +11,7 @@ mqtt.init()
 db.init()
 weather.init()
 
+
 @app.route('/')
 def get_data_between_timestamps():
     first_time_point = request.args.get("first_time_point") or 0

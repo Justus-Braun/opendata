@@ -34,11 +34,13 @@ def on_interval(sc):
     get_weather_data()    
     sc.enter(INTERVAL, 1, on_interval, (sc,))
 
+
 def thread_function():
     get_weather_data()
     s = sched.scheduler(time.time, time.sleep)
     s.enter(INTERVAL, 1, on_interval, (s,))
     s.run()
+
 
 def init():
     try:

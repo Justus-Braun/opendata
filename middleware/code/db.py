@@ -31,6 +31,7 @@ def convert_data_to_fields(data):
         fields[key] = value
     return fields
 
+
 def insert_data_weather_api(data): 
     current_time = round(time.time() * 1000)
     json_body = [
@@ -63,6 +64,7 @@ def insert_data(device_id, data, event=EVENT_NAME):
     ]
 
     client.write_points(json_body, database=DB_NAME, time_precision='ms', batch_size=10000)
+
 
 def get_data_between_timestamps(first_time_point, latest_time_point):
     if not type(first_time_point) is int:
