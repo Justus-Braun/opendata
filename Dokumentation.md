@@ -164,6 +164,7 @@ get_data_between_timestamps(first_time_point, latest_time_point): Diese Funktion
 4. weather_api.py
 
 Diese Datei befasst sich mit der Verbindung zur Open-Weather-API und Importierung der Daten.
+Von der Open-Weather-API werden zwei Werte übertragen: Temperatur in Kelvin (wird später in Grad Celsius umgewandelt) und Luftfeuchtigkeit in Prozent.
 get_weather_data(): Diese Funktion ruft Wetterdaten von der OpenWeatherMap-API ab. Sie verwendet die angegebenen Koordinaten, den API-Schlüssel und die URL, um eine Anfrage an die API zu senden. Die empfangenen Daten werden verarbeitet und mithilfe der insert_data_weather_api()-Funktion in die separate "weather_api"-Datenbank eingefügt.
 on_interval(sc): Diese Funktion wird periodisch in einem festgelegten Intervall aufgerufen und ruft die get_weather_data()-Funktion auf, um aktuelle Wetterdaten abzurufen und einzufügen.
 thread_function(): Diese Funktion wird als Hintergrundthread gestartet und ruft die on_interval()-Funktion in regelmäßigen Abständen auf, um Wetterdaten abzurufen.
