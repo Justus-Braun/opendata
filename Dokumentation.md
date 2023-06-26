@@ -116,9 +116,9 @@ Dieser Sensor basiert auf Ultraschalltechnologie und ermöglicht die präzise Me
 
 ### Microcontroller ([Heltec CubeCell HTCC-AB01](https://heltec.org/project/htcc-ab01/))
 
-Im Rahmen unseres Projekts ist der Sensor SKU:SEN0385 mit dem Microcontroller Heltec CubeCell HTCC-AB01 verbunden, der die Aufgabe hat, die Messwerte des Sensors zu erfassen und sie für die Übertragung über das LoRaWAN-Netzwerk vorzubereiten.
+Im Rahmen unseres Projekts wurden die Sensoren mit dem Microcontroller Heltec CubeCell HTCC-AB01 verbunden, der die Aufgabe hat, die Messwerte des angeschlossenen Sensors zu erfassen und sie für die Übertragung über das LoRaWAN-Netzwerk vorzubereiten.
 Als speziell für den Einsatz von IoT-Anwendungen entwickelter Microcontroller, verfügt er über eine integrierte LoRaWAN-Konnektivität und ist in der Lage, Daten drahtlos über große Entfernungen zu übertragen.
-Die vom Sensor erfassten Daten werden vom Microcontroller in XXX Abständen ausgelesen und an die LoRaWAN-Gateways gesendet.
+Die vom Sensor erfassten Daten werden vom Microcontroller in festgelegten Abständen ausgelesen und an die LoRaWAN-Gateways gesendet.
 
 
 ### Setup
@@ -128,11 +128,11 @@ Arduino IDE (Version 2.1.0)
 
 #### Anleitung
 1. Board installieren
-   -`File` -> `Preferences...` -> `Additional boards manager URLs` -> Link einfügen:
-   https://github.com/HelTecAutomation/CubeCell-Arduino/releases/download/V1.5.0/package_CubeCell_index.json
+   -`File` -> `Preferences...` -> `Additional boards manager URLs` -> Link einfügen:<br>
+   https://github.com/HelTecAutomation/CubeCell-Arduino/releases/download/V1.5.0/package_CubeCell_index.json<br>
    -`Boards Manager` öffnen und `CubeCell Development Framework` (aktuell: Version 1.5.0) installieren
-3. Library installieren
-   -`Library Manager` öffnen -> `Adafruit SHT31 Library` (aktuell: Version 2.2.0) und `Adafruit BusIO` (**Version 1.7.0** !!!) installieren (neuere Versionen funktionieren nicht)
+2. Library installieren
+   -`Library Manager` öffnen -> `Adafruit SHT31 Library` (aktuell: Version 2.2.0) und `Adafruit BusIO` (**Version 1.7.0** !!!) installieren (neuere Versionen funktionieren nicht)<br>
     - Beispiel: `File` -> `Examples` -> `Adafruit SHT31 Library` -> `SHT31test` 
 
 ## Kommunikation
