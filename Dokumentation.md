@@ -3,16 +3,16 @@
 ## Inhaltsverzeichnis
 1. [Projektdefintion und -umfeld](#projekt)
 2. [Systemarchitektur](#architektur)
-    1. [Hardware](#hardware)
-        1. [Temperatursensor](#sensor)
-        2. [Microcontroller](#microcontroller)
-    3. [Kommunikation](#kommunikation)
-        1. [LoraWan](#lorawan)
-        2. [MQTT](#mqtt)
-    4. [Middleware](#middleware)
-    5. [Datenbank](#datenbank)
-    6. [Visualisierung](#visualisierung)
-3.[Anwendung](#anwendung)
+3. [Hardware](#hardware)
+   1. [Temperatursensor](#sensor)
+   2. [Microcontroller](#microcontroller)
+4. [Kommunikation](#kommunikation)
+   1. [LoraWan](#lorawan)
+   2. [MQTT](#mqtt)
+5. [Middleware](#middleware)
+6. [Datenbank](#datenbank)
+7. [Visualisierung](#visualisierung)
+8. [Anwendung](#anwendung)
 
 ## Projektdefintion und -umfeld
 
@@ -47,6 +47,7 @@ Jede Komponente erfüllt eine spezifische Rolle und arbeitet zusammen, um ein zu
 
 ## Hardware
 ### Temperatursensor
+
 Eine zentrale Komponente unseres Systems ist der Sensor SKU:SEN0385.
 Dieser Sensor ist in der Lage, sowohl die Temperatur in Grad Celsius als auch die Luftfeuchtigkeit in Prozent präzise und zuverlässig zu messen.
 Der Sensor arbeitet effizient und zeichnet sich durch eine hohe Genauigkeit und Stabilität aus.
@@ -122,8 +123,8 @@ init(): Diese Funktion initialisiert die Wetter-API-Integration. Sie startet den
 Zur Visualisierung der Daten und Interaktion mit dem Anwender wird Grafana verwendet. Grafana ist eine Open-Source-Plattform, die es Benutzern ermöglicht, Daten aus verschiedenen Datenquellen abzurufen, zu analysieren und in ansprechenden Dashboards darzustellen. Grafana unterstützt eine Vielzahl von Datenquellen wie InfluxDB, Prometheus, Elasticsearch, MySQL und viele andere.
 
 
-##Anwendung
-# opendata-temperature
+## Anwendung
+
 
 # Table of Contents
 1. [Installation](#installation)
