@@ -23,8 +23,8 @@ def get_weather_data():
     text = res.text
     parsed_json = json.loads(text)
     data = {
-        "temperature": parsed_json['main']['temp'],
-        "humidity": parsed_json['main']['humidity'],
+        "temperature": int(parsed_json['main']['temp']),
+        "humidity": int(parsed_json['main']['humidity']),
     }
 
     db.insert_data_weather_api(data)
