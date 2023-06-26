@@ -1,30 +1,33 @@
-# Dokumentation
+# OpenData Projekt Temperatur- und Luftfeuchtigkeitssensor und Wasserpegelsensor
+# von Oliver Glaser, Justus Braun, Leon Schirra
+# Projekt- und Benutzer-Dokumentation
 
 ## Inhaltsverzeichnis
-1. [Projektdefintion und -umfeld](#projekt)
-2. [Systemarchitektur](#architektur)
-3. [Einrichtung](#einrichtung)
-4. [Hardware](#hardware)
+- [Projektdefintion und -umfeld](#projekt)
+- [Systemarchitektur](#architektur)
+- [Einrichtung](#einrichtung)
+- [Hardware](#hardware)
    1. [Temperatursensor](#sensor)
    2. [Microcontroller](#microcontroller)
    3. [Setup](#setup)
-5. [Kommunikation](#kommunikation)
+- [Kommunikation](#kommunikation)
    1. [LoraWan](#lorawan)
    2. [MQTT](#mqtt)
-6. [Middleware](#middleware)
-7. [Datenbank](#datenbank)
-8. [Visualisierung](#visualisierung)
-9. [Anwendung](#anwendung)
+- [Middleware](#middleware)
+- [Datenbank](#datenbank)
+- [Visualisierung](#visualisierung)
+
 
 ## Projektdefintion und -umfeld
 
-Im Rahmen des Moduls "Programmierung 2" für den Studiengang Informatik (B. Sc.) an der Hochschule Bonn-Rhein-Sieg haben wir einen Temperatur-Sensor mit Web-Visualisierung implementiert.
-Das Projekt hatte einen Zeitraum von ungefähr 7 Wochen und wurde neben dem regulären Studium realisiert. 
-Für das Projekt wurde uns die Hardware (Sensor, Microcontroller, Batterien, Solarzelle LINKSSSSSS) zur Verfügung gestellt.
+Im Rahmen des Moduls "Programmierung 2" für den Studiengang Informatik (B. Sc.) an der Hochschule Bonn-Rhein-Sieg haben wir 2 Projekte mit Webvisualisierung realisiert: einen Temperatur- und Luffeuchtigkeitssensor und einen Wasserpegelsensor.
+Die Projekte hatten einen Zeitraum von ungefähr 7 Wochen und wurden neben dem regulären Studium realisiert.
+Für die Projekte wurde uns die Hardware (Sensoren, Microcontroller, Batterien, Solarzellen, Gehäuse) zur Verfügung gestellt.
+
 
 ## Systemarchitektur
 
-Die Systemarchitektur unseres Projekts umfasst mehrere Komponenten, die gemeinsam die Erfassung und Darstellung der Temperaturdaten ermöglichen.
+Die Systemarchitektur unserer Projekte umfasst mehrere Komponenten, die gemeinsam die Erfassung und Darstellung der Temperaturdaten ermöglichen.
 
 Der Temperatursensor misst die Temperatur und ist über eine Schnittstelle mit einem Microcontroller verbunden. 
 Der Microcontroller fungiert als Bindeglied zwischen dem Sensor und dem LoRaWAN-Netzwerk. 
