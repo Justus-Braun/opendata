@@ -31,7 +31,7 @@ LoRaMacRegion_t loraWanRegion = LORAMAC_REGION_EU868;
 DeviceClass_t loraWanClass = CLASS_A;
 
 /*the application data transmission duty cycle.  value in [ms].*/
-uint32_t appTxDutyCycle = 10000;  // 30 * 60000;  // 30 minutes
+uint32_t appTxDutyCycle = 10 * 60000;  // 10 minutes
 
 /*OTAA or ABP*/
 bool overTheAirActivation = true;
@@ -58,7 +58,7 @@ uint8_t battery;    // %
 uint16_t distance;  // cm
 
 /* debugging */
-bool debug = true;  //false;
+bool debug = false;
 
 static void readSensor() {
   /* set error values */
