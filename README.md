@@ -25,7 +25,41 @@ Board: [CubeCell HTCC-AB01](https://heltec.org/project/htcc-ab01/)
 
 ## Nutzung
 
-## API
+# API-Dokumentation - Datenbankabfragen
+
+## Einführung
+Die vorliegende Dokumentation beschreibt eine API, die auf dem Endpunkt `http://<IP-Adresse>:5000` verfügbar ist. Durch Aufrufen des Endpunkts `/` können Daten aus einer Datenbank abgerufen werden. Optional können bestimmte Datenbereiche mithilfe von Unix-Zeitstempeln als Abfrageparameter angegeben werden. Diese Parameter werden als `first_time_point` und `latest_time_point` bezeichnet.
+
+## Endpunkt
+```
+GET http://<IP-Adresse>:5000
+```
+
+## Parameter
+- `first_time_point` (optional): Der Unix-Zeitstempel des frühesten Zeitpunkts, ab dem Daten abgerufen werden sollen. Wenn dieser Parameter nicht angegeben wird, werden alle verfügbaren Daten zurückgegeben.
+- `latest_time_point` (optional): Der Unix-Zeitstempel des spätesten Zeitpunkts, bis zu dem Daten abgerufen werden sollen. Wenn dieser Parameter nicht angegeben wird, werden alle verfügbaren Daten bis zum aktuellen Zeitpunkt zurückgegeben.
+
+## Antwort
+Die API gibt die abgefragten Daten aus der Datenbank zurück. Die Antwort erfolgt im JSON-Format und enthält alle relevanten Informationen zu den abgerufenen Datensätzen.
+
+## Beispielanfragen
+1. Abrufen aller Daten:
+```
+GET http://<IP-Adresse>:5000
+```
+
+2. Abrufen eines bestimmten Datenbereichs:
+```
+GET http://<IP-Adresse>:5000?first_time_point=1624704000&latest_time_point=1625097600
+```
+Hierbei wurden als `first_time_point` der Unix-Zeitstempel des 26. Juni 2021 00:00:00 und als `latest_time_point` der Unix-Zeitstempel des 30. Juni 2021 00:00:00 verwendet.
+
+## Hinweise
+- Der Endpunkt und die IP-Adresse sollten entsprechend der Implementierung angepasst werden.
+- Es wird empfohlen, die Unix-Zeitstempel in UTC zu verwenden, um einheitliche Ergebnisse zu erhalten.
+- Die genaue Struktur der zurückgegebenen Daten hängt von der Implementierung der API und der Datenbank ab.
+
+Bitte beachten Sie, dass dies nur eine Beispiel-Dokumentation ist und je nach spezifischer Implementierung weitere Informationen und Anpassungen erforderlich sein können.
 
 ## Middleware
 Create an `.env` file in `middleware/` with content
