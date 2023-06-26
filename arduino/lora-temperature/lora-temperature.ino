@@ -1,7 +1,7 @@
-#include "LoRaWan_APP.h"
-#include "Arduino.h"
+#include <Arduino.h>
+#include <LoRaWan_APP.h>
 #include <Wire.h>
-#include "Adafruit_SHT31.h"
+#include <Adafruit_SHT31.h>
 
 /*
  * set LoraWan_RGB to Active,the RGB active in loraWan
@@ -13,9 +13,9 @@
  */
 
 /* OTAA para*/
-uint8_t devEui[] = { 0x70, 0xB3, 0xD5, 0x7E, 0xD0, 0x05, 0xDA, 0x42 };  // 70B3D57ED005DA42
+uint8_t devEui[] = { 0x70, 0xB3, 0xD5, 0x7E, 0xD0, 0x05, 0xEF, 0x9A };
 uint8_t appEui[] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
-uint8_t appKey[] = { 0x91, 0x25, 0xB0, 0xB3, 0xE3, 0x37, 0x69, 0xAA, 0x76, 0x24, 0x0E, 0x22, 0xB8, 0xB5, 0xFA, 0xBA };  // 9125B0B3E33769AA76240E22B8B5FABA
+uint8_t appKey[] = { 0xC3, 0xC0, 0x27, 0x59, 0x89, 0x01, 0x7F, 0x95, 0x78, 0x33, 0x07, 0x08, 0x96, 0x94, 0xFB, 0x62 };
 
 /* ABP para*/
 uint8_t nwkSKey[] = { 0x15, 0xb1, 0xd0, 0xef, 0xa4, 0x63, 0xdf, 0xbe, 0x3d, 0x11, 0x18, 0x1e, 0x1e, 0xc7, 0xda, 0x85 };
@@ -32,7 +32,7 @@ LoRaMacRegion_t loraWanRegion = LORAMAC_REGION_EU868;
 DeviceClass_t loraWanClass = CLASS_A;
 
 /*the application data transmission duty cycle.  value in [ms].*/
-uint32_t appTxDutyCycle = 15000;
+uint32_t appTxDutyCycle = 3 * 60000;  // 30 minutes
 
 /*OTAA or ABP*/
 bool overTheAirActivation = true;
@@ -52,72 +52,88 @@ uint8_t appPort = 2;
 /* Number of trials to transmit the frame */
 uint8_t confirmedNbTrials = 4;
 
-// SHT31 Sensor
+/* SHT31 Sensor */
 Adafruit_SHT31 sht31 = Adafruit_SHT31();
+bool send;
+uint8_t battery;     // %
+uint8_t humidity;    // %
+int8_t temperature;  // C
 
-bool sensorActive = false;
-int last_sent_battery = -9999;      // error value
-int last_sent_humidity = -9999;     // error value
-int last_sent_temperature = -9999;  // error value
+/* debugging */
+bool debug = false;
 
-static int* readSensor() {
-  // TODO: activate power pin
-  // TODO: read battery percentage (as int)
+static void readSensor() {
+  /* set error values */
+  send = false;
+  battery = 0b10000000;
+  humidity = 0b10000000;
+  temperature = 0b10000000;
 
-  int data[4] = { 0, -9999, -9999, -9999 };  // send (0 or 1), battery, humidity, temperature
+  /* get battery percentage */
+  battery = map(BoardGetBatteryLevel(), 1, 254, 0, 100);  // 0 and 255 of BoardGetBatteryLevel() are error values
 
-  data[1] = 69;  // TODO: data[1] = get_battery_%
-  // data[1] = getBatteryVoltage();
+  bool valid = false;
+  int count = 0;
+  do {
+    /* activate power pin */
+    digitalWrite(Vext, LOW);
+    delay(2000);
 
-  if (sensorActive) {  // if the sensor is active we override the error values
-    // TODO: activate power pin
-    // TODO: initialize sensor?!
-    data[2] = sht31.readHumidity() * 100;
-    data[3] = sht31.readTemperature() * 100;
-    // TODO: deactivate power pin
+    /* initialize sensor */
+    sht31.begin();
+    delay(1000);
+
+    /* get humidity and temperature and override the error values */
+    humidity = sht31.readHumidity();        // ignore decimal places
+    temperature = sht31.readTemperature();  // ignore decimal places
+
+    /* valid if no error values accure */
+    valid = (humidity != 255 && temperature != -1);
+    count++;
+
+    if (debug) {
+      Serial.print("try: ");
+      Serial.print(count + 1);
+      Serial.print(", valid: ");
+      Serial.println(valid);
+    }
+
+    /* deactivate power pin */
+    digitalWrite(Vext, HIGH);
+    delay(1000);
+  } while (!valid && count < 10);
+
+  if (valid)
+    send = true;
+
+  if (debug) {
+    /* print values */
+    Serial.print("battery: ");
+    Serial.print(battery);
+    Serial.print("%, humidity: ");
+    Serial.print(humidity);
+    Serial.print("%, temperature: ");
+    Serial.print(temperature);
+    Serial.println("C");
   }
-
-  // just send if a value has changed
-  if (last_sent_battery != data[1]) {
-    last_sent_battery = data[1];
-    data[0] = 1;
-  }
-  if (last_sent_humidity != data[2]) {
-    last_sent_humidity = data[2];
-    data[0] = 1;
-  }
-  if (last_sent_temperature != data[3]) {
-    last_sent_temperature = data[3];
-    data[0] = 1;
-  }
-
-  return data;
 }
 
 /* Prepares the payload of the frame */
-static void prepareTxFrame(uint8_t port, int battery, int humidity, int temperature) {
-  appDataSize = 5;
-  appData[0] = battery;           // battery
-  appData[1] = humidity >> 8;     // humidity
-  appData[2] = humidity;          // humidity
-  appData[3] = temperature >> 8;  // temperature
-  appData[4] = temperature;       // temperature
+static void prepareTxFrame(uint8_t port) {
+  appDataSize = 3;
+  appData[0] = battery;
+  appData[1] = humidity;
+  appData[2] = temperature;
 }
-
 
 void setup() {
   Serial.begin(115200);
 
-  // Setup SHT31
-  if (sht31.begin())
-    sensorActive = true;  // SHT31 ready
-                          // else: Couldn't find SHT31
+  /* setup Vext pin */
+  pinMode(Vext, OUTPUT);
 
-  // Serial.print("Heater Enabled State: ");
-  // if (sht31.isHeaterEnabled())
-  //   Serial.println("ENABLED");
-  // else
-  //   Serial.println("DISABLED");
+  /* setup SHT31 sensor */
+  // sht31.begin();
 
   // #if(AT_SUPPORT)
   // 	enableAt();
@@ -148,19 +164,19 @@ void loop() {
       }
     case DEVICE_STATE_SEND:
       {
-        int* data = readSensor();
-        prepareTxFrame(appPort, data[1], data[2], data[3]);
-        if (1 == data[0]) {  // if the data should be send
+        readSensor();
+
+        prepareTxFrame(appPort);
+        if (send)
           LoRaWAN.send();
-        }
+
         deviceState = DEVICE_STATE_CYCLE;
         break;
       }
     case DEVICE_STATE_CYCLE:
       {
         // Schedule next packet transmission
-        txDutyCycleTime = appTxDutyCycle + randr(0, APP_TX_DUTYCYCLE_RND);
-        LoRaWAN.cycle(txDutyCycleTime);
+        LoRaWAN.cycle(appTxDutyCycle);
         deviceState = DEVICE_STATE_SLEEP;
         break;
       }
