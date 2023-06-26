@@ -138,7 +138,7 @@ Arduino IDE (Version 2.1.0)
 ## Kommunikation
 Unser Projekt nutzt LoRaWAN, ein energiesparendes drahtloses Netzwerkprotokoll, um die Temperaturdaten von den Sensoren an das TTN zu übertragen. Für die beiden Projekte stehen in diesem Repo jeweils eine .ino Datei bereit, die es dem Mikrocontroller ermöglichen, den Abstandssensor auszulesen und die Daten über das LoRaWAN-Protokoll zu übertragen.
 
-### lora-temperature.ino
+1. lora-temperature.ino
 
 Es werden verschiedene Bibliotheken importiert, darunter die LoRaWAN_APP-Bibliothek und die Adafruit_SHT31-Bibliothek, die für die Kommunikation über das LoRaWAN-Protokoll und die Ansteuerung des SHT31-Sensors verwendet werden.
 
@@ -149,7 +149,7 @@ Der Klimasensor liest die Batteriespannung, Luftfeuchtigkeit und Temperatur mith
 Der Code enthält auch Debugging-Funktionen, um den Status und die gelesenen Werte auf der seriellen Schnittstelle auszugeben. Die Schleife (loop) des Programms enthält einen Zustandsautomaten, der den Ablauf des Geräts steuert, einschließlich der Initialisierung, dem Beitritt zum LoRaWAN-Netzwerk, dem Senden von Sensorwerten und dem Ruhezustand.
 
 
-### lora-distance.ino
+2. lora-distance.ino
 
 Zu Beginn des Codes werden die erforderlichen Bibliotheken und Konfigurationsparameter importiert, einschließlich der Geräte- und Anwendungsschlüssel für die OTAA- und ABP-Authentifizierung. Es werden auch Einstellungen für das LoraWan-Region und die Geräteklasse vorgenommen.
 
