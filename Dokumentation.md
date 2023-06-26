@@ -114,7 +114,7 @@ init(): Diese Funktion initialisiert die MQTT-Kommunikation. Sie erstellt einen 
 
 Die db.py-Datei enthält Funktionen zur Datenbankverwaltung und -abfrage. Diese Datei enthält Funktionen zur Verbindung mit der InfluxDB-Datenbank. Sie stellt Methoden bereit, um Daten in die Datenbank einzufügen und Daten zwischen zwei Zeitstempeln abzurufen. In dieser Datei wird auch das Gerüst für die Open-Weather-API initialisiert. Die wichtigsten Funktionen umfassen:
 
-init(): Diese Funktion initialisiert die Datenbankverbindung und erstellt die erforderlichen Datenbanken, falls sie nicht bereits vorhanden sind. Es werden zwei Datenbanken initialisiert: measurements für Gerätemessungen und weather_api für Wetterdaten vom DWD.
+init(): Diese Funktion initialisiert die Datenbankverbindung und erstellt die erforderlichen Datenbanken, falls sie nicht bereits vorhanden sind. Es werden zwei Datenbanken initialisiert: measurements für Gerätemessungen und weather_api für Wetterdaten von Open Weather.
 convert_data_to_fields(data): Diese Funktion schreibt die empfangenen Daten in ein Array für die Datenbank.
 insert_data_weather_api(data): Diese Funktion schreibt die Open-Weather Daten in eine .json fügt sie dann in die Datenbank weather_api ein.
 insert_data(device_id, data, event=EVENT_NAME): Diese Funktion schreibt die Gerätemessungen in eine .json fügt sie dann in die Datenbank measurements ein.
@@ -157,6 +157,29 @@ Hierbei wurden als `first_time_point` der Unix-Zeitstempel des 26. Juni 2021 00:
 ## Visualisierung
 Zur Visualisierung der Daten und Interaktion mit dem Anwender wird Grafana verwendet. Grafana ist eine Open-Source-Plattform, die es Benutzern ermöglicht, Daten aus verschiedenen Datenquellen abzurufen, zu analysieren und in ansprechenden Dashboards darzustellen. Grafana unterstützt eine Vielzahl von Datenquellen wie InfluxDB, Prometheus, Elasticsearch, MySQL und viele andere.
 
+### Setup
+
+Um Grafana für die Visualisierung zu nutzen, müssen erst die beiden Datanbanken als Datasource hinzugefügt werden.
+Zuerst werden die Open Weather Daten eingefügt:
+
+1. Links im Abschnitt "Data sources" auf "Add data source" klicken
+![image](https://github.com/Justus-Braun/opendata/assets/57273189/48f3b115-aee4-4356-874f-0b25a5d12cea)
+
+2. "InfluxDB" auswählen
+![image](https://github.com/Justus-Braun/opendata/assets/57273189/fbc1a0bf-8d0f-40c3-9234-7712d538f69d)
+
+3. In den Settings die URL `http://influxdb:8086` angeben
+![image](https://github.com/Justus-Braun/opendata/assets/57273189/9793dbf2-cc0c-44b2-90dc-6298ec078e33)
+
+4. In den Details `weather_api` im Feld "Database" eintragen 
+![image](https://github.com/Justus-Braun/opendata/assets/57273189/33a7ec5e-bb4b-4935-a0c6-2002df04dac2)
+
+5. Mit "Save & Test" speichern
+
+6. Alle Schritte wiederholen und diesmal `measurements` als Database eintragen
+
+Da nun alle Datasources eingerichtet sind, können die Dashboards hinzugefügt werden.
+Im repo ist bereits ein Beispiel-Dashboard hinterlegt: `grafana/example_dashboard.json`
 
 ## Anwendung
 
@@ -196,12 +219,6 @@ Board: [CubeCell HTCC-AB01](https://heltec.org/project/htcc-ab01/)
 
 
 
-
-
-
-
-
-
 ## API-Dokumentation - Datenbankabfragen
 
 ### Einführung
@@ -230,13 +247,6 @@ GET http://<IP-Adresse>:5000
 GET http://<IP-Adresse>:5000?first_time_point=1624704000&latest_time_point=1625097600
 ```
 Hierbei wurden als `first_time_point` der Unix-Zeitstempel des 26. Juni 2021 00:00:00 und als `latest_time_point` der Unix-Zeitstempel des 30. Juni 2021 00:00:00 verwendet.
-
-### Hinweise
-- Der Endpunkt und die IP-Adresse sollten entsprechend der Implementierung angepasst werden.
-- Es wird empfohlen, die Unix-Zeitstempel in UTC zu verwenden, um einheitliche Ergebnisse zu erhalten.
-- Die genaue Struktur der zurückgegebenen Daten hängt von der Implementierung der API und der Datenbank ab.
-
-Bitte beachten Sie, dass dies nur eine Beispiel-Dokumentation ist und je nach spezifischer Implementierung weitere Informationen und Anpassungen erforderlich sein können.
 
 ## Setup
 #### Erstellen einer `.env`-Datei im Verzeichnis `middleware/` mit folgendem Inhalt:
