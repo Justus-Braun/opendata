@@ -3,17 +3,18 @@
 ## Inhaltsverzeichnis
 1. [Projektdefintion und -umfeld](#projekt)
 2. [Systemarchitektur](#architektur)
-3. [Hardware](#hardware)
+3. [Einrichtung](#einrichtung)
+4. [Hardware](#hardware)
    1. [Temperatursensor](#sensor)
    2. [Microcontroller](#microcontroller)
    3. [Setup](#setup)
-4. [Kommunikation](#kommunikation)
+5. [Kommunikation](#kommunikation)
    1. [LoraWan](#lorawan)
    2. [MQTT](#mqtt)
-5. [Middleware](#middleware)
-6. [Datenbank](#datenbank)
-7. [Visualisierung](#visualisierung)
-8. [Anwendung](#anwendung)
+6. [Middleware](#middleware)
+7. [Datenbank](#datenbank)
+8. [Visualisierung](#visualisierung)
+9. [Anwendung](#anwendung)
 
 ## Projektdefintion und -umfeld
 
@@ -45,6 +46,45 @@ Grafana bietet uns die Möglichkeit, benutzerdefinierte Dashboards zu erstellen 
 
 Diese Systemarchitektur ermöglicht eine nahtlose Erfassung, Übertragung, Verarbeitung, Speicherung und Darstellung der Temperaturdaten. 
 Jede Komponente erfüllt eine spezifische Rolle und arbeitet zusammen, um ein zuverlässiges und effizientes System für die Temperaturüberwachung bereitzustellen. 
+
+
+## Einrichtung
+
+#### Erstellen einer `.env`-Datei im Verzeichnis `middleware/` mit folgendem Inhalt:
+
+```env
+# Grafana
+GF_LOG_LEVEL=debug
+GF_SECURITY_ADMIN_USER=admin
+GF_SECURITY_ADMIN_PASSWORD=admin
+
+# InfluxDB
+INFLUXDB_ADMIN_USER=admin
+INFLUXDB_ADMIN_PASSWORD=admin
+```
+
+
+#### Erstellen einer `.env`-Datei im Verzeichnis `middleware/code/` mit folgendem Inhalt:
+```env
+#TTN 
+TTN_USER=
+TTN_PASSWORD=
+TTN_REGION=eu1
+
+#Influxdb
+DB_NAME=measurements
+EVENT_NAME=measurementEvent
+
+#OpenWeather
+WEATHER_LATITUDE=
+WEATHER_LONGITUDE=
+OPEN_WEATHER_API_KEY=
+```
+
+Für die Attribute "TTN_USER" und "TTN_PASSWORD" sind Login-Daten einzutragen.
+Die Werte für "WEATHER_LATITUDE" und "WEATHER_LONGITUDE" sind [latlong.net](https://www.latlong.net/) zu entnehmen.
+Der Wert für "OPEN_WEATHER_API_KEY" ist in [openweathermap.org](https://openweathermap.org/) zu erstellen.
+
 
 ## Hardware
 ### Temperatursensor ([Link](https://wiki.dfrobot.com/SHT31_Temperature_Humidity_Sensor_Weatherproof_SKU_SEN0385))
