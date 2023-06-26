@@ -24,6 +24,10 @@ def init():
 def convert_data_to_fields(data):
     fields = {}
     for key, value in data.items():
+        if value == "NaN":
+            print("NaN value found, skipping. Could be an Error please check the sensor.", flush=True)
+            continue
+
         fields[key] = value
     return fields
 
