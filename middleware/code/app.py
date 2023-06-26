@@ -17,12 +17,12 @@ def get_weather_data():
 
 @app.route('/')
 def get_data_between_timestamps():
-    timestamp1 = request.args.get("timestamp1") or 0
+    first_time_point = request.args.get("first_time_point") or 0
 
     current_time = round(time.time() * 1000)
 
-    timestamp2 = request.args.get("timestamp2") or current_time
-    return db.get_data_between_timestamps(timestamp1, timestamp2)
+    latest_time_point = request.args.get("latest_time_point") or current_time
+    return db.get_data_between_timestamps(int(first_time_point), int(latest_time_point))
 
 
 if __name__ == '__main__':
