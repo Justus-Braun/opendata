@@ -25,24 +25,24 @@ Board: [CubeCell HTCC-AB01](https://heltec.org/project/htcc-ab01/)
 
 ## Nutzung
 
-# API-Dokumentation - Datenbankabfragen
+## API-Dokumentation - Datenbankabfragen
 
-## Einführung
+### Einführung
 Die vorliegende Dokumentation beschreibt eine API, die auf dem Endpunkt `http://<IP-Adresse>:5000` verfügbar ist. Durch Aufrufen des Endpunkts `/` können Daten aus einer Datenbank abgerufen werden. Optional können bestimmte Datenbereiche mithilfe von Unix-Zeitstempeln als Abfrageparameter angegeben werden. Diese Parameter werden als `first_time_point` und `latest_time_point` bezeichnet.
 
-## Endpunkt
+### Endpunkt
 ```
 GET http://<IP-Adresse>:5000
 ```
 
-## Parameter
+### Parameter
 - `first_time_point` (optional): Der Unix-Zeitstempel des frühesten Zeitpunkts, ab dem Daten abgerufen werden sollen. Wenn dieser Parameter nicht angegeben wird, werden alle verfügbaren Daten zurückgegeben.
 - `latest_time_point` (optional): Der Unix-Zeitstempel des spätesten Zeitpunkts, bis zu dem Daten abgerufen werden sollen. Wenn dieser Parameter nicht angegeben wird, werden alle verfügbaren Daten bis zum aktuellen Zeitpunkt zurückgegeben.
 
-## Antwort
+### Antwort
 Die API gibt die abgefragten Daten aus der Datenbank zurück. Die Antwort erfolgt im JSON-Format und enthält alle relevanten Informationen zu den abgerufenen Datensätzen.
 
-## Beispielanfragen
+### Beispielanfragen
 1. Abrufen aller Daten:
 ```
 GET http://<IP-Adresse>:5000
@@ -54,28 +54,32 @@ GET http://<IP-Adresse>:5000?first_time_point=1624704000&latest_time_point=16250
 ```
 Hierbei wurden als `first_time_point` der Unix-Zeitstempel des 26. Juni 2021 00:00:00 und als `latest_time_point` der Unix-Zeitstempel des 30. Juni 2021 00:00:00 verwendet.
 
-## Hinweise
+### Hinweise
 - Der Endpunkt und die IP-Adresse sollten entsprechend der Implementierung angepasst werden.
 - Es wird empfohlen, die Unix-Zeitstempel in UTC zu verwenden, um einheitliche Ergebnisse zu erhalten.
 - Die genaue Struktur der zurückgegebenen Daten hängt von der Implementierung der API und der Datenbank ab.
 
 Bitte beachten Sie, dass dies nur eine Beispiel-Dokumentation ist und je nach spezifischer Implementierung weitere Informationen und Anpassungen erforderlich sein können.
 
-## Middleware
-Create an `.env` file in `middleware/` with content
+## Setup
+#### Erstellen einer `.env`-Datei im Verzeichnis `middleware/` mit folgendem Inhalt:
+
+[openweathermap.org](https://openweathermap.org/)
+
+[latlong.net](https://www.latlong.net/)
+
 ```env
-#Grafana
+# Grafana
 GF_LOG_LEVEL=debug
 GF_SECURITY_ADMIN_USER=admin
 GF_SECURITY_ADMIN_PASSWORD=admin
 
-#InfluxDB
+# InfluxDB
 INFLUXDB_ADMIN_USER=admin
 INFLUXDB_ADMIN_PASSWORD=admin
 ```
-Create an `.env` file in `middleware/code/` with content
-[openweathermap.org](https://openweathermap.org/)
-[latlong.net](https://www.latlong.net/)
+
+#### Erstellen einer `.env`-Datei im Verzeichnis `middleware/code/` mit folgendem Inhalt:
 ```env
 #TTN 
 TTN_USER=
