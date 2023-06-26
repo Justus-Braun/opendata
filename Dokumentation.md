@@ -46,13 +46,13 @@ Diese Systemarchitektur ermöglicht eine nahtlose Erfassung, Übertragung, Verar
 Jede Komponente erfüllt eine spezifische Rolle und arbeitet zusammen, um ein zuverlässiges und effizientes System für die Temperaturüberwachung bereitzustellen. 
 
 ## Hardware
-##Temperatursensor
+### Temperatursensor
 Eine zentrale Komponente unseres Systems ist der Sensor SKU:SEN0385.
 Dieser Sensor ist in der Lage, sowohl die Temperatur in Grad Celsius als auch die Luftfeuchtigkeit in Prozent präzise und zuverlässig zu messen.
 Der Sensor arbeitet effizient und zeichnet sich durch eine hohe Genauigkeit und Stabilität aus.
 
 
-## Microcontroller
+### Microcontroller
 
 Im Rahmen unseres Projekts ist der Sensor SKU:SEN0385 mit dem Microcontroller Heltec CubeCell-AB01 verbunden, der die Aufgabe hat, die Messwerte des Sensors zu erfassen und sie für die Übertragung über das LoRaWAN-Netzwerk vorzubereiten.
 Als speziell für den Einsatz von IoT-Anwendungen entwickelter Microcontroller, verfügt er über eine integrierte LoRaWAN-Konnektivität und ist in der Lage, Daten drahtlos über große Entfernungen zu übertragen.
