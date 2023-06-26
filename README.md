@@ -138,7 +138,7 @@ Arduino IDE (Version 2.1.0)
 ## Kommunikation
 Unser Projekt nutzt LoRaWAN, ein energiesparendes drahtloses Netzwerkprotokoll, um die Temperaturdaten von den Sensoren an das TTN zu übertragen. Für die beiden Projekte stehen in diesem Repo jeweils eine .ino Datei bereit, die es dem Mikrocontroller ermöglichen, den Abstandssensor auszulesen und die Daten über das LoRaWAN-Protokoll zu übertragen.
 
-1. **lora-temperature.ino**
+### lora-temperature.ino
 
 Es werden verschiedene Bibliotheken importiert, darunter die LoRaWAN_APP-Bibliothek und die Adafruit_SHT31-Bibliothek, die für die Kommunikation über das LoRaWAN-Protokoll und die Ansteuerung des SHT31-Sensors verwendet werden.
 
@@ -149,7 +149,7 @@ Der Klimasensor liest die Batteriespannung, Luftfeuchtigkeit und Temperatur mith
 Der Code enthält auch Debugging-Funktionen, um den Status und die gelesenen Werte auf der seriellen Schnittstelle auszugeben. Die Schleife (loop) des Programms enthält einen Zustandsautomaten, der den Ablauf des Geräts steuert, einschließlich der Initialisierung, dem Beitritt zum LoRaWAN-Netzwerk, dem Senden von Sensorwerten und dem Ruhezustand.
 
 
-2. **lora-distance.ino**
+### lora-distance.ino
 
 Zu Beginn des Codes werden die erforderlichen Bibliotheken und Konfigurationsparameter importiert, einschließlich der Geräte- und Anwendungsschlüssel für die OTAA- und ABP-Authentifizierung. Es werden auch Einstellungen für das LoraWan-Region und die Geräteklasse vorgenommen.
 
@@ -175,14 +175,14 @@ Aufgrund der Einfachheit und großen Anzahl von nützlichen Bibliotheken haben w
 
 Im Folgenden werden die einzelnen Dateien und ihre Funktionen beschrieben:
 
-1. app.py
+### app.py
 
 Diese Datei ist der Hauptpunkt der Anwendung und verwendet das Flask-Framework, um HTTP-Anfragen zu verarbeiten. Derzeit ist folgender Endpunkt definiert:
 
 /: Abruf von Daten aus der Datenbank. Über Parameter können Zeitstempel angegeben werden, um Daten zwischen zwei Zeitpunkten abzurufen. Standardmäßig werden der Zeitpunkt "0" (Anfang) und der aktuelle Zeitpunkt verwendet.
 
 
-2. mqtt.py
+### mqtt.py
 
 Die mqtt.py-Datei stellt die MQTT-Kommunikation mit dem "The Things Network" (TTN) her, um Messdaten von den angeschlossenen Geräten zu empfangen. Die wichtigsten Funktionen sind:
 
@@ -192,7 +192,7 @@ thread_function(client): Diese Funktion wird in einem separaten Thread ausgefüh
 init(): Diese Funktion initialisiert die MQTT-Kommunikation. Sie erstellt einen MQTT-Client, setzt Benutzername und Passwort, stellt eine TLS-Verbindung zum Broker her, abonniert alle verfügbaren Topics und startet den Hintergrundthread, der die MQTT-Kommunikation aufrechterhält.
 
 
-3. db.py
+### db.py
 
 Die db.py-Datei enthält Funktionen zur Datenbankverwaltung und -abfrage. Diese Datei enthält Funktionen zur Verbindung mit der InfluxDB-Datenbank. Sie stellt Methoden bereit, um Daten in die Datenbank einzufügen und Daten zwischen zwei Zeitstempeln abzurufen. In dieser Datei wird auch das Gerüst für die Open-Weather-API initialisiert. Die wichtigsten Funktionen umfassen:
 
@@ -203,7 +203,7 @@ insert_data(device_id, data, event=EVENT_NAME): Diese Funktion schreibt die Ger�
 get_data_between_timestamps(first_time_point, latest_time_point): Diese Funktion ruft Daten aus der Datenbank measurements zwischen den angegebenen Zeitpunkten ab.
 
 
-4. weather_api.py
+### weather_api.py
 
 Diese Datei befasst sich mit der Verbindung zur Open-Weather-API und Importierung der Daten.
 Von der Open-Weather-API werden zwei Werte übertragen: Temperatur in Kelvin (wird später in Grad Celsius umgewandelt) und Luftfeuchtigkeit in Prozent.
