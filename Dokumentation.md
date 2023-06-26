@@ -1,5 +1,7 @@
 # OpenData Projekt Temperatur- und Luftfeuchtigkeitssensor und Wasserpegelsensor
-# von Oliver Glaser, Justus Braun, Leon Schirra
+**von Oliver Glaser, Justus Braun, Leon Schirra**
+<br>
+<br>
 # Projekt- und Benutzer-Dokumentation
 
 ## Inhaltsverzeichnis
@@ -21,34 +23,34 @@
 ## Projektdefintion und -umfeld
 
 Im Rahmen des Moduls "Programmierung 2" für den Studiengang Informatik (B. Sc.) an der Hochschule Bonn-Rhein-Sieg haben wir 2 Projekte mit Webvisualisierung realisiert: einen Temperatur- und Luffeuchtigkeitssensor und einen Wasserpegelsensor.
-Die Projekte hatten einen Zeitraum von ungefähr 7 Wochen und wurden neben dem regulären Studium realisiert.
+Die Projekte hatten einen Zeitraum von 7 Wochen und wurden neben dem regulären Studium realisiert.
 Für die Projekte wurde uns die Hardware (Sensoren, Microcontroller, Batterien, Solarzellen, Gehäuse) zur Verfügung gestellt.
 
 
 ## Systemarchitektur
 
-Die Systemarchitektur unserer Projekte umfasst mehrere Komponenten, die gemeinsam die Erfassung und Darstellung der Temperaturdaten ermöglichen.
+Die Systemarchitektur unserer Projekte umfasst mehrere Komponenten, die gemeinsam die Erfassung und Darstellung der Sensordaten ermöglichen.
 
-Der Temperatursensor misst die Temperatur und ist über eine Schnittstelle mit einem Microcontroller verbunden. 
-Der Microcontroller fungiert als Bindeglied zwischen dem Sensor und dem LoRaWAN-Netzwerk. 
-Er verarbeitet die Sensorwerte und erstellt Datenpakete, die über das LoRaWAN-Protokoll übertragen werden.
+Ein Klimasensor misst Temperatur und Luftfeuchtigkeit und ein Abstandssensor misst den Wasserpegel. Beide sind über eine Schnittstelle mit Microcontrollern verbunden.
+Die Microcontroller fungieren als Bindeglied zwischen Sensor und LoRaWAN-Netzwerk. 
+Sie verarbeiten Sensorwerte und erstellen Datenpakete, die über das LoRaWAN-Protokoll übertragen werden.
 
 Die LoRaWAN-Gateways empfangen die Datenpakete von den Microcontrollern und leiten sie an das The Things Network (TTN) weiter. 
 TTN ist eine LoRaWAN-Infrastruktur, die als zentrale Datenvermittlungsstelle fungiert. 
-Dort werden die Daten gesammelt und über das MQTT-Protokoll veröffentlicht.
+Dort werden die Daten gesammelt und über das MQTT-Protokoll versendet.
 
-Die Python-Middleware fungiert als MQTT-Client und empfängt die veröffentlichten Daten über MQTT. 
-Sie übernimmt die Verarbeitung der empfangenen Daten, einschließlich Transformationen und Validierung, und leitet sie an die InfluxDB weiter.
+Die Python-Middleware fungiert als MQTT-Client und empfängt die versendeten Daten über MQTT. 
+Sie übernimmt die Verarbeitung der empfangenen Daten, einschließlich Transformationen und Validierung, und leitet sie an die InfluxDB Datenbank weiter.
 
-Die InfluxDB ist eine Zeitreihendatenbank, in der die Temperaturdaten gespeichert werden. 
+Die InfluxDB ist eine Zeitreihendatenbank, in der die Daten gespeichert werden. 
 Sie bietet eine effiziente Speicherung und Abfrage von zeitabhängigen Daten und ermöglicht es uns, die gesammelten Daten einfach zu verwalten und zu analysieren.
 
-Für die Darstellung und Visualisierung der Daten nutzen wir Grafana. Grafana ist ein Open-Source-Tool zur Erstellung von Dashboards und Diagrammen. 
-Es greift auf die InfluxDB zu, um die gespeicherten Temperaturdaten abzurufen und sie in ansprechender und interaktiver Form darzustellen. 
-Grafana bietet uns die Möglichkeit, benutzerdefinierte Dashboards zu erstellen und die Temperaturdaten in Echtzeit zu überwachen.
+Für die Visualisierung der Daten nutzen wir Grafana. Grafana ist ein Open-Source-Tool zur Erstellung von Dashboards und Diagrammen im Webbrowser. 
+Es greift auf die InfluxDB zu, um die gespeicherten Daten abzurufen und sie in übersichtlicher und interaktiver Form darzustellen. 
+Grafana bietet uns die Möglichkeit, benutzerdefinierte Dashboards zu erstellen und die Daten in Echtzeit zu überwachen.
 
-Diese Systemarchitektur ermöglicht eine nahtlose Erfassung, Übertragung, Verarbeitung, Speicherung und Darstellung der Temperaturdaten. 
-Jede Komponente erfüllt eine spezifische Rolle und arbeitet zusammen, um ein zuverlässiges und effizientes System für die Temperaturüberwachung bereitzustellen. 
+Diese Systemarchitektur ermöglicht eine nahtlose Erfassung, Übertragung, Verarbeitung, Speicherung und Darstellung der Daten. 
+Jede Komponente erfüllt eine spezifische Rolle und arbeitet zusammen, um ein zuverlässiges und effizientes System für die Datenüberwachung bereitzustellen. 
 
 
 ## Einrichtung
@@ -84,18 +86,33 @@ WEATHER_LONGITUDE=
 OPEN_WEATHER_API_KEY=
 ```
 
-Für die Attribute "TTN_USER" und "TTN_PASSWORD" sind Login-Daten einzutragen.
-Die Werte für "WEATHER_LATITUDE" und "WEATHER_LONGITUDE" sind [latlong.net](https://www.latlong.net/) zu entnehmen.
-Der Wert für "OPEN_WEATHER_API_KEY" ist in [openweathermap.org](https://openweathermap.org/) zu erstellen.
+Für "TTN_USER" ist der MQTT Username und für "TTN_PASSWORD" der API Key von der TTN Application einzutragen.<br>
+Die Werte für "WEATHER_LATITUDE" und "WEATHER_LONGITUDE" sind auf [latlong.net](https://www.latlong.net/) für den gewünschten Vergleich-Standort zu entnehmen.<br>
+Der Wert für "OPEN_WEATHER_API_KEY" ist in [openweathermap.org](https://openweathermap.org/) zu erstellen.<br>
+
+Um die für dieses Projekte benötigten Services zu starten, wird der Command 
+```
+docker compose up
+```
+im Verzeichnis `/middleware` ausgeführt.
+
+Um diese wieder zu stoppen, wird der Command 
+```
+docker compose down
+```
+im Verzeichnis `/middleware` ausgeführt.
 
 
 ## Hardware
-### Temperatursensor ([SKU:SEN0385](https://wiki.dfrobot.com/SHT31_Temperature_Humidity_Sensor_Weatherproof_SKU_SEN0385))
+### Klimasensor ([SKU:SEN0385](https://wiki.dfrobot.com/SHT31_Temperature_Humidity_Sensor_Weatherproof_SKU_SEN0385))
 
 Eine zentrale Komponente unseres Systems ist der Sensor SKU:SEN0385.
-Dieser Sensor ist in der Lage, sowohl die Temperatur in Grad Celsius als auch die Luftfeuchtigkeit in Prozent präzise und zuverlässig zu messen.
+Dieser Sensor ist in der Lage, sowohl die Temperatur in Kelvin als auch die Luftfeuchtigkeit in Prozent präzise und zuverlässig zu messen.
 Der Sensor arbeitet effizient und zeichnet sich durch eine hohe Genauigkeit und Stabilität aus.
 
+### Abstandssensor ([A01NYUB](https://wiki.dfrobot.com/A01NYUB%20Waterproof%20Ultrasonic%20Sensor%20SKU:%20SEN0313))
+Für das zweite Projekt wurde der Sensor A01NYUB verwendet.
+Dieser Sensor basiert auf Ultraschalltechnologie und ermöglicht die präzise Messung des Abstands zu einer Oberfläche, in diesem Fall dem Wasserspiegel. Durch die Auswertung der Laufzeit des Ultraschallimpulses können wir den Wasserpegel bestimmen. Der A01NYUB Sensor zeichnet sich durch seine hohe Genauigkeit, Zuverlässigkeit und einfache Handhabung aus, wodurch er ideal für die Anwendung als Wasserpegelsensor geeignet ist.
 
 ### Microcontroller ([Heltec CubeCell HTCC-AB01](https://heltec.org/project/htcc-ab01/))
 
