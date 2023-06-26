@@ -133,12 +133,40 @@ init(): Diese Funktion initialisiert die Wetter-API-Integration. Sie startet den
 
 ## Datenbank
 
+### Datenbank-API
+
+Die Datenbank mit den gemessenen Werten verfügt über eine API, die auf dem Endpunkt `http://<IP-Adresse>:5000` verfügbar ist. Durch Aufrufen des Endpunkts `/` können Daten abgerufen werden. Optional können bestimmte Datenbereiche mithilfe von Unix-Zeitstempeln als Abfrageparameter angegeben werden. Diese Parameter werden als `first_time_point` und `latest_time_point` bezeichnet.
+- `first_time_point` (optional): Der Unix-Zeitstempel des frühesten Zeitpunkts, ab dem Daten abgerufen werden sollen. Wenn dieser Parameter nicht angegeben wird, werden alle verfügbaren Daten zurückgegeben.
+- `latest_time_point` (optional): Der Unix-Zeitstempel des spätesten Zeitpunkts, bis zu dem Daten abgerufen werden sollen. Wenn dieser Parameter nicht angegeben wird, werden alle verfügbaren Daten bis zum aktuellen Zeitpunkt zurückgegeben.
+
+Die Antwort erfolgt im JSON-Format und enthält alle relevanten Informationen zu den abgerufenen Datensätzen.
+
+#### Beispielanfragen
+1. Abrufen aller Daten:
+```
+GET http://<IP-Adresse>:5000
+```
+
+2. Abrufen eines bestimmten Datenbereichs:
+```
+GET http://<IP-Adresse>:5000?first_time_point=1624704000&latest_time_point=1625097600
+```
+Hierbei wurden als `first_time_point` der Unix-Zeitstempel des 26. Juni 2021 00:00:00 und als `latest_time_point` der Unix-Zeitstempel des 30. Juni 2021 00:00:00 verwendet.
+
 
 ## Visualisierung
 Zur Visualisierung der Daten und Interaktion mit dem Anwender wird Grafana verwendet. Grafana ist eine Open-Source-Plattform, die es Benutzern ermöglicht, Daten aus verschiedenen Datenquellen abzurufen, zu analysieren und in ansprechenden Dashboards darzustellen. Grafana unterstützt eine Vielzahl von Datenquellen wie InfluxDB, Prometheus, Elasticsearch, MySQL und viele andere.
 
 
 ## Anwendung
+
+
+
+## AB HIER MÜLL
+## AB HIER MÜLL
+## AB HIER MÜLL
+
+
 
 
 # Table of Contents
@@ -165,6 +193,14 @@ Board: [CubeCell HTCC-AB01](https://heltec.org/project/htcc-ab01/)
     - ...
 
 ## Nutzung
+
+
+
+
+
+
+
+
 
 ## API-Dokumentation - Datenbankabfragen
 
