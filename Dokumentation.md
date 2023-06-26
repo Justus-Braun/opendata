@@ -77,13 +77,13 @@ Aufgrund der Einfachheit und großen Anzahl von nützlichen Bibliotheken haben w
 
 Im Folgenden werden die einzelnen Dateien und ihre Funktionen beschrieben:
 
-1. [app.py]
+1. app.py
 Diese Datei ist der Hauptpunkt der Anwendung und verwendet das Flask-Framework, um HTTP-Anfragen zu verarbeiten. Derzeit ist folgender Endpunkt definiert:
 
 /: Abruf von Daten aus der Datenbank. Über Parameter können Zeitstempel angegeben werden, um Daten zwischen zwei Zeitpunkten abzurufen. Standardmäßig werden der Zeitpunkt "0" (Anfang) und der aktuelle Zeitpunkt verwendet.
 
 
-2. [mqtt.py]
+2. mqtt.py
 
 Die mqtt.py-Datei stellt die MQTT-Kommunikation mit dem "The Things Network" (TTN) her, um Messdaten von den angeschlossenen Geräten zu empfangen. Die wichtigsten Funktionen sind:
 
@@ -93,7 +93,7 @@ thread_function(client): Diese Funktion wird in einem separaten Thread ausgefüh
 init(): Diese Funktion initialisiert die MQTT-Kommunikation. Sie erstellt einen MQTT-Client, setzt Benutzername und Passwort, stellt eine TLS-Verbindung zum Broker her, abonniert alle verfügbaren Topics und startet den Hintergrundthread, der die MQTT-Kommunikation aufrechterhält.
 
 
-3. [db.py]
+3. db.py
 Die db.py-Datei enthält Funktionen zur Datenbankverwaltung und -abfrage. Diese Datei enthält Funktionen zur Verbindung mit der InfluxDB-Datenbank. Sie stellt Methoden bereit, um Daten in die Datenbank einzufügen und Daten zwischen zwei Zeitstempeln abzurufen. In dieser Datei wird auch das Gerüst für die Open-Weather-API initialisiert. Die wichtigsten Funktionen umfassen:
 
 init(): Diese Funktion initialisiert die Datenbankverbindung und erstellt die erforderlichen Datenbanken, falls sie nicht bereits vorhanden sind. Es werden zwei Datenbanken initialisiert: measurements für Gerätemessungen und weather_api für Wetterdaten vom DWD.
@@ -103,7 +103,7 @@ insert_data(device_id, data, event=EVENT_NAME): Diese Funktion schreibt die Ger�
 get_data_between_timestamps(first_time_point, latest_time_point): Diese Funktion ruft Daten aus der Datenbank measurements zwischen den angegebenen Zeitpunkten ab.
 
 
-4. [weather_api.py]
+4. weather_api.py
 Diese Datei befasst sich mit der Verbindung zur Open-Weather-API und Importierung der Daten.
 get_weather_data(): Diese Funktion ruft Wetterdaten von der OpenWeatherMap-API ab. Sie verwendet die angegebenen Koordinaten, den API-Schlüssel und die URL, um eine Anfrage an die API zu senden. Die empfangenen Daten werden verarbeitet und mithilfe der insert_data_weather_api()-Funktion in die separate "weather_api"-Datenbank eingefügt.
 on_interval(sc): Diese Funktion wird periodisch in einem festgelegten Intervall aufgerufen und ruft die get_weather_data()-Funktion auf, um aktuelle Wetterdaten abzurufen und einzufügen.
