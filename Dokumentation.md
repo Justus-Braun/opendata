@@ -173,6 +173,10 @@ init(): Diese Funktion initialisiert die Wetter-API-Integration. Sie startet den
 
 ## Datenbank
 
+Für die Realisierung der Datenbank wurde InfluxDB aufgrund seiner Spezialisierung auf Zeitreihendaten und seiner nahtlosen Integration mit Grafana ausgewählt. 
+Es ermöglicht die effiziente Speicherung, Abfrage und Visualisierung der erfassten Sensorwerte. Zudem skaliert es gut und bietet eine benutzerfreundliche Abfragesprache. InfluxDB erfüllt somit alle Anforderungen des Projekts.
+
+
 ### Datenbank-API
 
 Die Datenbank mit den gemessenen Werten verfügt über eine API, die auf dem Endpunkt `http://<IP-Adresse>:5000` verfügbar ist. Durch Aufrufen des Endpunkts `/` können Daten abgerufen werden. Optional können bestimmte Datenbereiche mithilfe von Unix-Zeitstempeln als Abfrageparameter angegeben werden. Diese Parameter werden als `first_time_point` und `latest_time_point` bezeichnet.
