@@ -130,25 +130,47 @@ Arduino IDE (Version 2.1.0)
 1. Board installieren
    -`File` -> `Preferences...` -> `Additional boards manager URLs` -> Link einfügen:<br>
    https://github.com/HelTecAutomation/CubeCell-Arduino/releases/download/V1.5.0/package_CubeCell_index.json<br>
-   -`Boards Manager` öffnen und `CubeCell Development Framework` (aktuell: Version 1.5.0) installieren
+   ->`Boards Manager` öffnen und `CubeCell Development Framework` (aktuell: Version 1.5.0) installieren
 2. Library installieren
    -`Library Manager` öffnen -> `Adafruit SHT31 Library` (aktuell: Version 2.2.0) und `Adafruit BusIO` (**Version 1.7.0** !!!) installieren (neuere Versionen funktionieren nicht)<br>
     - Beispiel: `File` -> `Examples` -> `Adafruit SHT31 Library` -> `SHT31test` 
 
 ## Kommunikation
-Unser Projekt nutzt LoRaWAN, ein energiesparendes drahtloses Netzwerkprotokoll, um die Temperaturdaten von dem Sensor an das TTN zu übertragen.
+Unser Projekt nutzt LoRaWAN, ein energiesparendes drahtloses Netzwerkprotokoll, um die Temperaturdaten von den Sensoren an das TTN zu übertragen. Für die beiden Projekte stehen in diesem Repo jeweils eine .ino Datei bereit, die es dem Mikrocontroller ermöglichen, den Abstandssensor auszulesen und die Daten über das LoRaWAN-Protokoll zu übertragen.
 
-Die Datei lora-temperature.ino implementiert die Hauptlogik für die Kommunikation des Microcontrollers mit dem LoRaWAN-Netzwerk und dem Sensor SKU:SEN0385. 
-Der Code verwendet die LoRaWAN-Bibliothek zur Kommunikation über das LoRaWAN-Protokoll.
+### lora-temperature.ino
 
-In der loop()-Funktion wird der Zustand des Geräts überwacht und entsprechende Aktionen ausgeführt. Der Code wechselt zwischen den verschiedenen Gerätezuständen, wie z.B. Initialisierung, Beitritt zum Netzwerk, Senden der Daten und Ruhezustand. Je nach Zustand werden die erforderlichen Aktionen ausgeführt, wie z.B. das Senden der Datenpakete über LoRaWAN oder das Planen des nächsten Sendevorgangs.
+Es werden verschiedene Bibliotheken importiert, darunter die LoRaWAN_APP-Bibliothek und die Adafruit_SHT31-Bibliothek, die für die Kommunikation über das LoRaWAN-Protokoll und die Ansteuerung des SHT31-Sensors verwendet werden.
 
-Zum Auslesen der Daten aus dem Sensor wird die Funktion readSensor() ausgeführt. Hierbei werden Werte für die Batteriespannung, Luftfeuchtigkeit und Temperatur erfasst. Die Funktion überprüft auch, ob sich der Sensor im aktiven Modus befindet und aktualisiert die Daten nur dann, wenn sich die Werte geändert haben.
+Der Code enthält auch Konfigurationsparameter für die LoRaWAN-Verbindung, wie die DevEUI, AppEUI, AppKey, nwkSKey, appSKey und devAddr. Diese Parameter werden verwendet, um das Gerät über die OTAA (Over-the-Air Activation) oder ABP (Activation by Personalization) mit dem LoRaWAN-Netzwerk zu verbinden.
+
+Der Klimasensor liest die Batteriespannung, Luftfeuchtigkeit und Temperatur mithilfe des SHT31-Sensors aus. Die gelesenen Werte werden in einer Payload für den LoRaWAN-Funkübertragungsvorgang vorbereitet und gesendet. Der Sensor wird periodisch in einem Zyklus ausgelesen, der durch die Variable "appTxDutyCycle" definiert ist.
+
+Der Code enthält auch Debugging-Funktionen, um den Status und die gelesenen Werte auf der seriellen Schnittstelle auszugeben. Die Schleife (loop) des Programms enthält einen Zustandsautomaten, der den Ablauf des Geräts steuert, einschließlich der Initialisierung, dem Beitritt zum LoRaWAN-Netzwerk, dem Senden von Sensorwerten und dem Ruhezustand.
+
+
+### lora-distance.ino
+
+Zu Beginn des Codes werden die erforderlichen Bibliotheken und Konfigurationsparameter importiert, einschließlich der Geräte- und Anwendungsschlüssel für die OTAA- und ABP-Authentifizierung. Es werden auch Einstellungen für das LoraWan-Region und die Geräteklasse vorgenommen.
+
+Der Code definiert dann die Variablen für den Ultraschallsensor, die Batterie und den Abstand. Der Sensor wird über eine SoftSerial-Verbindung initialisiert und konfiguriert. Es werden auch Debugging-Optionen und Pin-Einstellungen festgelegt.
+
+Die Funktion "readSensor" wird verwendet, um die Sensorwerte zu lesen. Zunächst wird der Batteriestand ermittelt. Anschließend wird der Ultraschallsensor aktiviert, um den Abstand zu messen. Die gemessenen Daten werden verarbeitet und in die entsprechenden Variablen geschrieben.
+
+Die Funktion "prepareTxFrame" bereitet das Datenpaket für die Übertragung vor. Es wird die Größe des Payloads festgelegt und die Batterie- und Abstandswerte in das Datenarray geschrieben.
+
+Im Setup-Teil werden die serielle Kommunikation und der Vext-Pin konfiguriert. Der Ultraschallsensor wird initialisiert, und die LoRaWAN-Verbindung wird initialisiert und auf den Join-Zustand gesetzt.
+
+In der Hauptschleife (loop) des Programms werden verschiedene Zustände behandelt. Im INIT-Zustand werden die Geräteparameter gedruckt und die LoRaWAN-Initialisierung durchgeführt. Im JOIN-Zustand wird versucht, sich mit dem Netzwerk zu verbinden. Im SEND-Zustand werden die Sensordaten gelesen und das Datenpaket vorbereitet. Es wird dann über LoRaWAN gesendet. Im CYCLE-Zustand wird der nächste Sendezyklus geplant, und im SLEEP-Zustand geht das Gerät in den Schlafmodus über.
+
+Nach Abschluss eines Zustands wird je nach Ergebnis der vorherige Zustand erneut aufgerufen oder der INIT-Zustand gestartet, um den Zyklus zu wiederholen.
+
+
 
 
 ## Middleware
 
-Die Middleware-Komponente des Temperatursensor-Projekts umfasst eine Reihe von python-Dateien, die für die Kommunikation mit externen Diensten, die Datenverarbeitung und die Datenbankzugriffe verantwortlich sind.
+Die Middleware-Komponente wird universell für beide Projekte genutzt und umfasst eine Reihe von python-Dateien, die für die Kommunikation mit externen Diensten, die Datenverarbeitung und die Datenbankzugriffe verantwortlich sind.
 Aufgrund der Einfachheit und großen Anzahl von nützlichen Bibliotheken haben wir uns für python entschieden.
 
 Im Folgenden werden die einzelnen Dateien und ihre Funktionen beschrieben:
@@ -200,7 +222,7 @@ Es ermöglicht die effiziente Speicherung, Abfrage und Visualisierung der erfass
 
 ### Datenbank-API
 
-Die Datenbank mit den gemessenen Werten verfügt über eine API, die auf dem Endpunkt `http://<IP-Adresse>:5000` verfügbar ist. Durch Aufrufen des Endpunkts `/` können Daten abgerufen werden. Optional können bestimmte Datenbereiche mithilfe von Unix-Zeitstempeln als Abfrageparameter angegeben werden. Diese Parameter werden als `first_time_point` und `latest_time_point` bezeichnet.
+Die Datenbank mit den gemessenen Werten verfügt über eine API, die auf dem Endpunkt `http://<IP-Adresse>:5000` verfügbar ist. Es können von beiden Projekten Daten durch Aufrufen des Endpunkts `/` abgerufen werden. Optional können bestimmte Datenbereiche mithilfe von Unix-Zeitstempeln als Abfrageparameter angegeben werden. Diese Parameter werden als `first_time_point` und `latest_time_point` bezeichnet.
 - `first_time_point` (optional): Der Unix-Zeitstempel des frühesten Zeitpunkts, ab dem Daten abgerufen werden sollen. Wenn dieser Parameter nicht angegeben wird, werden alle verfügbaren Daten zurückgegeben.
 - `latest_time_point` (optional): Der Unix-Zeitstempel des spätesten Zeitpunkts, bis zu dem Daten abgerufen werden sollen. Wenn dieser Parameter nicht angegeben wird, werden alle verfügbaren Daten bis zum aktuellen Zeitpunkt zurückgegeben.
 
