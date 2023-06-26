@@ -117,7 +117,6 @@ Nun auf Save & Test.
 Jetzt wieder holen wir alle schritte noch einmal nur das wir `measurements` als Datenbank nutzen
 
 Da nun alle Datasources eingerichtet sind können wir die Dashboards hinzufügen.
-Da kann man sich frei austoben es ist aber auch ein im repo hinterlegt.
-
+Da kann man sich frei austoben es ist aber auch ein im repo hinterlegt: `grafana/example_dashboard.json`
 
 
