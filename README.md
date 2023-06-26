@@ -1,4 +1,4 @@
-# OpenData Projekt Temperatur- und Luftfeuchtigkeitssensor und Wasserpegelsensor
+# OpenData Projekt Klima- und Wasserpegelsensor
 **von Oliver Glaser, Justus Braun, Leon Schirra**
 <br>
 <br>
@@ -6,18 +6,25 @@
 
 ## Inhaltsverzeichnis
 - [Projektdefintion und -umfeld](#projekt)
-- [Systemarchitektur](#architektur)
+- [Systemarchitektur](#systemarchitektur)
 - [Einrichtung](#einrichtung)
 - [Hardware](#hardware)
-   1. [Temperatursensor](#sensor)
-   2. [Microcontroller](#microcontroller)
-   3. [Setup](#setup)
+   1. [Klimasensor](#klimasensor)
+   2. [Abstandssensor](#abstandssensor)
+   3. [Microcontroller](#microcontroller)
+   4. [Setup](#h-setup)
 - [Kommunikation](#kommunikation)
-   1. [LoraWan](#lorawan)
-   2. [MQTT](#mqtt)
+   1. [lora-temperature.ino](#lora-temperature.ino)
+   2. [lora-distance.ino](#lora-distance.ino)
 - [Middleware](#middleware)
+   1. [app.py](#app.py)
+   2. [mqtt.py](#mqtt.py)
+   3. [db.py](#db.py)
+   4. [weather_api.py](#weather_api.py)
 - [Datenbank](#datenbank)
+   1. [Datenbank-API](#datenbank-api)
 - [Visualisierung](#visualisierung)
+   1. [Setup](#v-setup)
 
 
 ## Projektdefintion und -umfeld
