@@ -96,3 +96,28 @@ WEATHER_LONGITUDE=
 OPEN_WEATHER_API_KEY=
 ```
 
+## Grafana einrichten
+Zuerst müssen wir unsere Datenbank als Datasource hinzufügen.
+Dazu navigieren wir links zu Datasource.
+
+Dort auf Add new Datasource klicken
+![image](https://github.com/Justus-Braun/opendata/assets/57273189/48f3b115-aee4-4356-874f-0b25a5d12cea)
+
+Dort Klicken wir auf Influxdb
+![image](https://github.com/Justus-Braun/opendata/assets/57273189/fbc1a0bf-8d0f-40c3-9234-7712d538f69d)
+
+In den Settings nutzten wir als URL `http://influxdb:8086`.
+![image](https://github.com/Justus-Braun/opendata/assets/57273189/9793dbf2-cc0c-44b2-90dc-6298ec078e33)
+
+Weiter unten fügen wir dann `weather_api` als Datenbank ein. 
+![image](https://github.com/Justus-Braun/opendata/assets/57273189/33a7ec5e-bb4b-4935-a0c6-2002df04dac2)
+
+Nun auf Save & Test.
+
+Jetzt wieder holen wir alle schritte noch einmal nur das wir `measurements` als Datenbank nutzen
+
+Da nun alle Datasources eingerichtet sind können wir die Dashboards hinzufügen.
+Da kann man sich frei austoben es ist aber auch ein im repo hinterlegt.
+
+
+
