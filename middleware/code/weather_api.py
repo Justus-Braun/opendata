@@ -3,6 +3,7 @@ import os
 import sched
 import time
 import requests
+from threading import Thread
 
 from dotenv import load_dotenv
 
@@ -33,9 +34,18 @@ def on_interval(sc):
     get_weather_data()    
     sc.enter(INTERVAL, 1, on_interval, (sc,))
 
-
-def init():
+def thread_function():
     get_weather_data()
     s = sched.scheduler(time.time, time.sleep)
     s.enter(INTERVAL, 1, on_interval, (s,))
     s.run()
+
+def init():
+    try:
+        thread = Thread(target=thread_function)
+        thread.start()
+
+    except Exception:
+        print("Error starting weather api thread", flush=True)
+    
+    

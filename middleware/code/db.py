@@ -66,3 +66,10 @@ def insert_data(device_id, data, event=EVENT_NAME):
     ]
 
     client.write_points(json_body, database=DB_NAME, time_precision='ms', batch_size=10000)
+
+def get_data_between_timestamps(timestamp1, timestamp2):
+    query = 'SELECT * FROM "ttn_measurements" WHERE time > {}ms AND time < {}ms'.format(timestamp1, timestamp2)
+    query_weather = 'SELECT * FROM "weather_measurements" WHERE time > {}ms AND time < {}ms'.format(timestamp1, timestamp2)
+    result = client.query(query, database=DB_NAME)
+    result_weather = client.query(query_weather, database=DB_WEATHER_API)
+    return list(list(result.get_points()) + list(result_weather.get_points()))
