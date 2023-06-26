@@ -32,7 +32,7 @@ LoRaMacRegion_t loraWanRegion = LORAMAC_REGION_EU868;
 DeviceClass_t loraWanClass = CLASS_A;
 
 /*the application data transmission duty cycle.  value in [ms].*/
-uint32_t appTxDutyCycle = 3 * 60000;  // 30 minutes
+uint32_t appTxDutyCycle = 30 * 60000;  // 30 minutes
 
 /*OTAA or ABP*/
 bool overTheAirActivation = true;
@@ -62,15 +62,20 @@ int8_t temperature;  // C
 /* debugging */
 bool debug = false;
 
+/* constants */
+uint8_t ERROR_VALUE = 0b10000000;
+uint8_t BATTERY_LEVEL_LOWEST = 1;
+uint8_t BATTERY_LEVEL_HIGHEST = 254;
+
 static void readSensor() {
   /* set error values */
   send = false;
-  battery = 0b10000000;
-  humidity = 0b10000000;
-  temperature = 0b10000000;
+  battery = ERROR_VALUE;
+  humidity = ERROR_VALUE;
+  temperature = ERROR_VALUE;
 
   /* get battery percentage */
-  battery = map(BoardGetBatteryLevel(), 1, 254, 0, 100);  // 0 and 255 of BoardGetBatteryLevel() are error values
+  battery = map(BoardGetBatteryLevel(), BATTERY_LEVEL_LOWEST, BATTERY_LEVEL_HIGHEST, 0, 100);  // 0 and 255 of BoardGetBatteryLevel() are error values
 
   bool valid = false;
   int count = 0;
@@ -131,9 +136,6 @@ void setup() {
 
   /* setup Vext pin */
   pinMode(Vext, OUTPUT);
-
-  /* setup SHT31 sensor */
-  // sht31.begin();
 
   // #if(AT_SUPPORT)
   // 	enableAt();
