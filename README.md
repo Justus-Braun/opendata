@@ -130,16 +130,23 @@ Die vom Sensor erfassten Daten werden vom Microcontroller in festgelegten Abstä
 
 ### Setup
 
-#### Voraussetzung
-Arduino IDE (Version 2.1.0)
+#### Hardware
 
-#### Anleitung
+![Schaltplan_Klimasensor](https://github.com/Justus-Braun/opendata/assets/72599090/cebad5c4-d63c-4807-a802-a7bf27dcba4f)
+*Schaltplan Klimasensor*
+
+![Schaltplan_Abstandssensor](https://github.com/Justus-Braun/opendata/assets/72599090/b279fa99-fbab-43d0-8a75-30e31daf87fa)
+*Schaltplan Abstandssensor*
+
+#### Software
+*Arduino IDE (Version 2.1.0)*
+
 1. Board installieren
-   -`File` -> `Preferences...` -> `Additional boards manager URLs` -> Link einfügen:<br>
+   - `File` -> `Preferences...` -> `Additional boards manager URLs` -> Link einfügen:<br>
    https://github.com/HelTecAutomation/CubeCell-Arduino/releases/download/V1.5.0/package_CubeCell_index.json<br>
-   ->`Boards Manager` öffnen und `CubeCell Development Framework` (aktuell: Version 1.5.0) installieren
+   - `Boards Manager` öffnen und `CubeCell Development Framework` (aktuell: Version 1.5.0) installieren
 2. Library installieren
-   -`Library Manager` öffnen -> `Adafruit SHT31 Library` (aktuell: Version 2.2.0) und `Adafruit BusIO` (**Version 1.7.0** !!!) installieren (neuere Versionen funktionieren nicht)<br>
+   - `Library Manager` öffnen -> `Adafruit SHT31 Library` (aktuell: Version 2.2.0) und `Adafruit BusIO` (**Version 1.7.0** !!!) installieren (neuere Versionen funktionieren nicht)<br>
     - Beispiel: `File` -> `Examples` -> `Adafruit SHT31 Library` -> `SHT31test` 
 
 ## Kommunikation
