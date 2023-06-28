@@ -114,7 +114,7 @@ im Verzeichnis `/middleware` ausgeführt.
 ### Klimasensor ([SKU:SEN0385](https://wiki.dfrobot.com/SHT31_Temperature_Humidity_Sensor_Weatherproof_SKU_SEN0385))
 
 Eine zentrale Komponente unseres Systems ist der Sensor SKU:SEN0385.
-Dieser Sensor ist in der Lage, sowohl die Temperatur in Kelvin als auch die Luftfeuchtigkeit in Prozent präzise und zuverlässig zu messen.
+Dieser Sensor ist in der Lage, sowohl die Temperatur in Celsius als auch die Luftfeuchtigkeit in Prozent präzise und zuverlässig zu messen.
 Der Sensor arbeitet effizient und zeichnet sich durch eine hohe Genauigkeit und Stabilität aus.
 
 ### Abstandssensor ([A01NYUB](https://wiki.dfrobot.com/A01NYUB%20Waterproof%20Ultrasonic%20Sensor%20SKU:%20SEN0313))
